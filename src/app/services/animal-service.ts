@@ -6,14 +6,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AnimalService {
-  apiUri = '/api/animals';
-  httpOptions = new HttpHeaders().set('Content-Type', 'application/json');
+  apiUriGet = '/api/animalsall';    // ← CAMBIA A ESTA RUTA que trae TODOS
+  apiUriPost = '/api/animal';
 
-  constructor(private http: HttpClient) {}
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
+  constructor(private http: HttpClient) { }
+
   getAllAnimalsData(): Observable<any> {
-    return this.http.get<any>(this.apiUri);
+    return this.http.get<any>(this.apiUriGet);  // Ahora usará /api/animalsall
   }
+
   newAnimal(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUri, data, { headers: this.httpOptions });
+    return this.http.post<any>(this.apiUriPost, data, this.httpOptions);
   }
 }
