@@ -18,6 +18,7 @@
               <th scope="col">Edad</th>
               <th scope="col">Tipo</th>
               <th scope="col">Fecha</th>
+              <th scope="col">Acciones</th>
             </tr>
           </thead>
 
@@ -28,10 +29,20 @@
               <td>{{ item.edad }}</td>
               <td>{{ item.tipo }}</td>
               <td>{{ item.fecha | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="toggleEditAnimal(item._id)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="deleteAnimal(item._id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
             } @empty {
             <tr>
-              <td colspan="4" class="text-muted fst-italic">
+              <td colspan="5" class="text-muted fst-italic">
                 No hay animales registrados todavía.
               </td>
             </tr>
@@ -41,17 +52,50 @@
       </div>
     </div>
   </div>
+
+  <!-- FORMULARIO DE EDICIÓN -->
+  <div *ngIf="editableAnimal" class="mt-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-warning text-dark fw-bold">
+        Editar Animal
+      </div>
+      <div class="card-body">
+        <form class="p-2" (ngSubmit)="updateAnimalEntry()" [formGroup]="animalForm">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Nombre del animal"
+              formControlName="nombre">
+          </div>
+          <div class="mb-3">
+            <label for="edad" class="form-label">Edad</label>
+            <input type="number" class="form-control" id="edad" placeholder="Edad del animal" formControlName="edad">
+          </div>
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <input type="text" class="form-control" id="tipo" placeholder="Tipo de animal" formControlName="tipo">
+          </div>
+          <div class="d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i> Guardar
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="editableAnimal = false">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- TERMINA TABLA -->
+
 
 <!-- MODAL NUEVO ANIMAL -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow-lg border-0">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Registrar nuevo animal
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">Registrar nuevo animal</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
